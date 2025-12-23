@@ -11,9 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -101,5 +99,21 @@ public class ArtifactController {
     public ArtifactImportResponseDto importArtifacts(@Parameter(description = "JSON file with artifact records", required = true)
                                                      @RequestParam("file") MultipartFile file) {
         return artifactService.importArtifacts(file);
+    }
+
+    @Operation(summary = "Get artifact report", description = "Generates CSV report for artifacts matching filters")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Report generated", content = @Content(mediaType = "text/csv")),
+    })
+    @PostMapping("/_report")
+    public ResponseEntity<byte[]> getArtifactReport(@Valid @Parameter(description = "Filters for report", required = true)
+                                                    @RequestBody ArtifactListRequestDto artifactListRequestDto) {
+        byte[] reportContent = artifactService.generateArtifactsReport(artifactListRequestDto);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDisposition(ContentDisposition.attachment().filename("artifacts-report.csv").build());
+        headers.setContentType(new MediaType("text", "csv"));
+
+        return new ResponseEntity<>(reportContent, headers, HttpStatus.OK);
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
@@ -44,15 +45,7 @@ public class ArtifactService {
 
     public ArtifactListResponseDto getPageableArtifactsList(ArtifactListRequestDto requestDto) {
 
-        Specification<Artifact> spec = Specification
-                .where(ArtifactSpecification.hasCreator(requestDto.getCreatorId()))
-                .and(ArtifactSpecification.hasOrigin(requestDto.getOrigin()))
-                .and(ArtifactSpecification.yearBetween(
-                        requestDto.getYearFrom(),
-                        requestDto.getYearTo()))
-                .and(ArtifactSpecification.powerBetween(
-                        requestDto.getPowerFrom(),
-                        requestDto.getPowerTo()));
+        Specification<Artifact> spec = buildSpecification(requestDto);
 
         PageRequest pageRequest = PageRequest.of(
                 requestDto.getPage(),
@@ -105,6 +98,68 @@ public class ArtifactService {
                 .imported(importResult.imported())
                 .failed(importResult.failed())
                 .build();
+    }
+
+    public byte[] generateArtifactsReport(ArtifactListRequestDto requestDto) {
+        Specification<Artifact> spec = buildSpecification(requestDto);
+
+        List<Artifact> artifacts = artifactRepository.findAll(spec);
+
+        return buildArtifactsCsv(artifacts).getBytes(StandardCharsets.UTF_8);
+    }
+
+    private String buildArtifactsCsv(List<Artifact> artifacts) {
+        StringBuilder sb = new StringBuilder(artifacts.size() * 128);
+
+        writeCsvRow(sb, "Id", "Name", "Origin", "Tags", "Year Created", "Power Level",
+                "Creator Name", "Creator Race", "Creator Realm");
+
+        for (Artifact a : artifacts) {
+            Creator c = a.getCreator();
+            writeCsvRow(sb,
+                    a.getId(),
+                    a.getName(),
+                    a.getOrigin(),
+                    a.getTags(),
+                    a.getYearCreated(),
+                    a.getPowerLevel(),
+                    c != null ? c.getName() : null,
+                    c != null ? c.getRace() : null,
+                    c != null ? c.getRealm() : null
+            );
+        }
+
+        return sb.toString();
+    }
+
+    private void writeCsvRow(StringBuilder sb, Object... values) {
+        for (int i = 0; i < values.length; i++) {
+            if (i > 0) sb.append(',');
+            sb.append(escapeCsv(values[i]));
+        }
+        sb.append('\n');
+    }
+
+    private String escapeCsv(Object value) {
+        if (value == null) return "";
+        String s = String.valueOf(value);
+
+        boolean mustQuote = s.contains(",") || s.contains("\"") || s.contains("\n") || s.contains("\r");
+        if (!mustQuote) return s;
+
+        return "\"" + s.replace("\"", "\"\"") + "\"";
+    }
+
+    private Specification<Artifact> buildSpecification(ArtifactListRequestDto requestDto) {
+        return Specification
+                .where(ArtifactSpecification.hasCreator(requestDto.getCreatorId()))
+                .and(ArtifactSpecification.hasOrigin(requestDto.getOrigin()))
+                .and(ArtifactSpecification.yearBetween(
+                        requestDto.getYearFrom(),
+                        requestDto.getYearTo()))
+                .and(ArtifactSpecification.powerBetween(
+                        requestDto.getPowerFrom(),
+                        requestDto.getPowerTo()));
     }
 
     private static Artifact convertToEntity(ArtifactSaveDto dto, Creator creator) {
