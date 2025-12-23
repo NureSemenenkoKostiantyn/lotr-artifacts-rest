@@ -1,9 +1,6 @@
 package com.profitsoft.lotrartifactsrest.controller;
 
-import com.profitsoft.lotrartifactsrest.dto.ArtifactDetailsDto;
-import com.profitsoft.lotrartifactsrest.dto.ArtifactListRequestDto;
-import com.profitsoft.lotrartifactsrest.dto.ArtifactListResponseDto;
-import com.profitsoft.lotrartifactsrest.dto.ArtifactSaveDto;
+import com.profitsoft.lotrartifactsrest.dto.*;
 import com.profitsoft.lotrartifactsrest.service.ArtifactService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/artifact")
@@ -90,5 +88,18 @@ public class ArtifactController {
     public void deleteArtifact(@Parameter(description = "ID of the artifact to delete", required = true)
                                @PathVariable Long artifactId) {
         artifactService.deleteArtifact(artifactId);
+    }
+
+    @Operation(summary = "Import artifacts from JSON file", description = "Imports artifacts from uploaded JSON array")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Import completed",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ArtifactImportResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input file",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetail.class)))
+    })
+    @PostMapping("/upload")
+    public ArtifactImportResponseDto importArtifacts(@Parameter(description = "JSON file with artifact records", required = true)
+                                                     @RequestParam("file") MultipartFile file) {
+        return artifactService.importArtifacts(file);
     }
 }

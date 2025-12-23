@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,10 +18,14 @@ import java.util.List;
 public class ArtifactService {
     private final ArtifactRepository artifactRepository;
     private final CreatorRepository creatorRepository;
+    private final ArtifactUploadParser artifactUploadParser;
 
-    public ArtifactService(ArtifactRepository artifactRepository, CreatorRepository creatorRepository) {
+    public ArtifactService(ArtifactRepository artifactRepository,
+                           CreatorRepository creatorRepository,
+                           ArtifactUploadParser artifactUploadParser) {
         this.artifactRepository = artifactRepository;
         this.creatorRepository = creatorRepository;
+        this.artifactUploadParser = artifactUploadParser;
     }
 
     public ArtifactDetailsDto saveArtifact(ArtifactSaveDto dto) {
@@ -85,6 +90,21 @@ public class ArtifactService {
         artifactRepository.findById(artifactId)
                 .orElseThrow(() -> new IllegalArgumentException("Artifact with id '%s' not found".formatted(artifactId)));
         artifactRepository.deleteById(artifactId);
+    }
+
+    public ArtifactImportResponseDto importArtifacts(MultipartFile file) {
+        ArtifactUploadParser.ImportResult importResult = artifactUploadParser.parse(file, dto -> {
+            try {
+                saveArtifact(dto);
+            } catch (Exception ex) {
+                throw new IllegalArgumentException(ex);
+            }
+        });
+
+        return ArtifactImportResponseDto.builder()
+                .imported(importResult.imported())
+                .failed(importResult.failed())
+                .build();
     }
 
     private static Artifact convertToEntity(ArtifactSaveDto dto, Creator creator) {
