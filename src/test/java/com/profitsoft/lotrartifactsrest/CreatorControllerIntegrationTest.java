@@ -1,6 +1,6 @@
 package com.profitsoft.lotrartifactsrest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.profitsoft.lotrartifactsrest.dto.CreatorSaveDto;
 import com.profitsoft.lotrartifactsrest.model.Creator;
 import com.profitsoft.lotrartifactsrest.repository.CreatorRepository;

@@ -1,7 +1,5 @@
 package com.profitsoft.lotrartifactsrest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.profitsoft.lotrartifactsrest.TestcontainersConfiguration;
 import com.profitsoft.lotrartifactsrest.dto.ArtifactListRequestDto;
 import com.profitsoft.lotrartifactsrest.dto.ArtifactSaveDto;
 import com.profitsoft.lotrartifactsrest.model.Artifact;
@@ -17,6 +15,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.ObjectMapper;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -159,15 +158,15 @@ class ArtifactControllerIntegrationTest {
 
     @Test
     void shouldUploadArtifacts() throws Exception {
-        Creator creator = createCreator("Sauron", "Maia", "Mordor");
+        Creator sauron = createCreator("Sauron", "Maia", "Mordor");
         Creator feanor = createCreator("Feanor", "Elf", "Valinor");
 
-        String payload = Files.readString(Path.of("src/main/resources/sample-artifacts.json"))
-                .replace("\"creatorId\": 1", "\"creatorId\": " + creator.getId())
+        String payload = Files.readString(Path.of("src/main/resources/artifacts-upload.json"))
+                .replace("\"creatorId\": 1", "\"creatorId\": " + sauron.getId())
                 .replace("\"creatorId\": 3", "\"creatorId\": " + feanor.getId());
         MockMultipartFile multipartFile = new MockMultipartFile(
                 "file",
-                "sample-artifacts.json",
+                "artifacts-upload.json",
                 MediaType.APPLICATION_JSON_VALUE,
                 payload.getBytes()
         );
@@ -175,8 +174,8 @@ class ArtifactControllerIntegrationTest {
         mockMvc.perform(multipart("/api/artifact/upload")
                         .file(multipartFile))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.imported", is(2)))
-                .andExpect(jsonPath("$.failed", is(0)));
+                .andExpect(jsonPath("$.imported", is(15)))
+                .andExpect(jsonPath("$.failed", is(15)));
     }
 
     private Creator createCreator(String name, String race, String realm) {
