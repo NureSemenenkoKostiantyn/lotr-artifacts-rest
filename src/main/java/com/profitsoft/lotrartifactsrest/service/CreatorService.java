@@ -2,6 +2,8 @@ package com.profitsoft.lotrartifactsrest.service;
 
 import com.profitsoft.lotrartifactsrest.dto.CreatorDetailsDto;
 import com.profitsoft.lotrartifactsrest.dto.CreatorSaveDto;
+import com.profitsoft.lotrartifactsrest.exception.ConflictException;
+import com.profitsoft.lotrartifactsrest.exception.NotFoundException;
 import com.profitsoft.lotrartifactsrest.model.Creator;
 import com.profitsoft.lotrartifactsrest.repository.CreatorRepository;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class CreatorService {
     }
 
     public CreatorDetailsDto saveCreator(CreatorSaveDto dto) {
+        validateNameUniqueness(dto.getName());
         Creator creator = convertToEntity(dto);
         Creator savedCreator = creatorRepository.save(creator);
         return convertToDetailsDto(savedCreator);
@@ -31,13 +34,15 @@ public class CreatorService {
 
     public CreatorDetailsDto getCreatorById(Long creatorId) {
         Creator creator = creatorRepository.findById(creatorId)
-                .orElseThrow(() -> new IllegalArgumentException("Creator with id '%s' not found".formatted(creatorId)));
+                .orElseThrow(() -> new NotFoundException("Creator with id '%s' not found".formatted(creatorId)));
         return convertToDetailsDto(creator);
     }
 
     public CreatorDetailsDto updateCreator(Long creatorId, CreatorSaveDto dto) {
         Creator existingCreator = creatorRepository.findById(creatorId)
-                .orElseThrow(() -> new IllegalArgumentException("Creator with id '%s' not found".formatted(creatorId)));
+                .orElseThrow(() -> new NotFoundException("Creator with id '%s' not found".formatted(creatorId)));
+
+        validateNameUniqueness(dto.getName(), creatorId);
         existingCreator.setName(dto.getName());
         existingCreator.setRace(dto.getRace());
         existingCreator.setRealm(dto.getRealm());
@@ -47,10 +52,23 @@ public class CreatorService {
 
     public void deleteCreator(Long creatorId) {
         creatorRepository.findById(creatorId)
-                .orElseThrow(() -> new IllegalArgumentException("Creator with id '%s' not found".formatted(creatorId)));
+                .orElseThrow(() -> new NotFoundException("Creator with id '%s' not found".formatted(creatorId)));
         creatorRepository.deleteById(creatorId);
 
     }
+
+    private void validateNameUniqueness(String name) {
+        if (creatorRepository.existsByNameIgnoreCase(name)) {
+            throw new ConflictException("Creator with name '%s' already exists".formatted(name));
+        }
+    }
+
+    private void validateNameUniqueness(String name, Long creatorId) {
+        if (creatorRepository.existsByNameIgnoreCaseAndIdIsNot(name, creatorId)) {
+            throw new ConflictException("Creator with name '%s' already exists".formatted(name));
+        }
+    }
+
 
     private static CreatorDetailsDto convertToDetailsDto(Creator data) {
         return CreatorDetailsDto.builder()

@@ -1,0 +1,242 @@
+[
+  {
+    "name": "The One Ring",
+    "creatorId": 1,
+    "origin": "Mount Doom",
+    "tags": "ring,master-ring,shadow,forging",
+    "yearCreated": 1600,
+    "powerLevel": 1000
+  },
+  {
+    "name": "Barad-dûr Foundations Stone",
+    "creatorId": 1,
+    "origin": "Mordor",
+    "tags": "fortress,stone,architecture",
+    "yearCreated": 1000,
+    "powerLevel": 300
+  },
+  {
+    "name": "Palantír of Minas Ithil",
+    "creatorId": 1,
+    "origin": "Minas Ithil",
+    "tags": "palantir,seeing-stone,corruption",
+    "yearCreated": 2000,
+    "powerLevel": 520
+  },
+  {
+    "name": "Morgul Blade",
+    "creatorId": 1,
+    "origin": "Minas Morgul",
+    "tags": "weapon,knife,wraith,morgul",
+    "yearCreated": 3018,
+    "powerLevel": 650
+  },
+  {
+    "name": "Sauron's Battle Standard",
+    "creatorId": 1,
+    "origin": "Mordor",
+    "tags": "banner,war,command",
+    "yearCreated": 3018,
+    "powerLevel": 180
+  },
+  {
+    "name": "Ringwraith Cloak",
+    "creatorId": 1,
+    "origin": "Mordor",
+    "tags": "cloak,wraith,shadow,stealth",
+    "yearCreated": 2251,
+    "powerLevel": 420
+  },
+  {
+    "name": "Black Arrowheads of Gorgoroth",
+    "creatorId": 1,
+    "origin": "Gorgoroth",
+    "tags": "ammo,arrow,orcish",
+    "yearCreated": 3017,
+    "powerLevel": 90
+  },
+  {
+    "name": "Helm of the Mouth of Sauron",
+    "creatorId": 1,
+    "origin": "Barad-dûr",
+    "tags": "helm,black-númenórean,terror",
+    "yearCreated": 3018,
+    "powerLevel": 240
+  },
+  {
+    "name": "Nenya (Ring of Adamant)",
+    "creatorId": 2,
+    "origin": "Eregion",
+    "tags": "ring,elven,water,adamant",
+    "yearCreated": 1590,
+    "powerLevel": 900
+  },
+  {
+    "name": "Narya (Ring of Fire)",
+    "creatorId": 2,
+    "origin": "Eregion",
+    "tags": "ring,elven,fire,hope",
+    "yearCreated": 1590,
+    "powerLevel": 880
+  },
+  {
+    "name": "Vilya (Ring of Air)",
+    "creatorId": 2,
+    "origin": "Eregion",
+    "tags": "ring,elven,air,leadership",
+    "yearCreated": 1590,
+    "powerLevel": 920
+  },
+  {
+    "name": "The Nine Rings for Mortal Men",
+    "creatorId": 2,
+    "origin": "Eregion",
+    "tags": "ring,nine,men,craft",
+    "yearCreated": 1590,
+    "powerLevel": 700
+  },
+  {
+    "name": "The Seven Rings for the Dwarf-lords",
+    "creatorId": 2,
+    "origin": "Eregion",
+    "tags": "ring,seven,dwarves,craft",
+    "yearCreated": 1590,
+    "powerLevel": 720
+  },
+  {
+    "name": "Mírdain Smithing Hammer",
+    "creatorId": 2,
+    "origin": "Ost-in-Edhil",
+    "tags": "tool,hammer,smithing,craft",
+    "yearCreated": 1500,
+    "powerLevel": 160
+  },
+  {
+    "name": "Eregion Star-Glass Vial",
+    "creatorId": 2,
+    "origin": "Eregion",
+    "tags": "glass,light,craft",
+    "yearCreated": 1550,
+    "powerLevel": 210
+  },
+  {
+    "name": "Silver-inlay Circlet of Ost-in-Edhil",
+    "creatorId": 2,
+    "origin": "Ost-in-Edhil",
+    "tags": "jewelry,circlet,silver",
+    "yearCreated": 1540,
+    "powerLevel": 140
+  },
+  {
+    "name": "Silmaril of the Heavens (Replica)",
+    "creatorId": 3,
+    "origin": "Tirion",
+    "tags": "jewel,light,legendary,replica",
+    "yearCreated": 1495,
+    "powerLevel": 950
+  },
+  {
+    "name": "Fëanorian Lamp of Crystal",
+    "creatorId": 3,
+    "origin": "Valinor",
+    "tags": "lamp,crystal,light",
+    "yearCreated": 1490,
+    "powerLevel": 260
+  },
+  {
+    "name": "Oath-scroll of the Noldor",
+    "creatorId": 3,
+    "origin": "Tirion",
+    "tags": "scroll,oath,history",
+    "yearCreated": 1495,
+    "powerLevel": 120
+  },
+  {
+    "name": "Sword of the House of Fëanor",
+    "creatorId": 3,
+    "origin": "Formenos",
+    "tags": "weapon,sword,noldor",
+    "yearCreated": 1492,
+    "powerLevel": 540
+  },
+  {
+    "name": "Star-forged Signet Ring",
+    "creatorId": 3,
+    "origin": "Valinor",
+    "tags": "ring,signet,noldor",
+    "yearCreated": 1488,
+    "powerLevel": 310
+  },
+  {
+    "name": "Gem-cutter's Chisel of Fëanor",
+    "creatorId": 3,
+    "origin": "Tirion",
+    "tags": "tool,chisel,craft,jewel",
+    "yearCreated": 1487,
+    "powerLevel": 190
+  },
+  {
+    "name": "Helm-crest of the Noldorin High King",
+    "creatorId": 3,
+    "origin": "Valinor",
+    "tags": "armor,helm,crest,noldor",
+    "yearCreated": 1493,
+    "powerLevel": 400
+  },
+  {
+    "name": "Aulë's Smithing Tongs",
+    "creatorId": 4,
+    "origin": "Valinor",
+    "tags": "tool,tongs,vala,forge",
+    "yearCreated": 1,
+    "powerLevel": 800
+  },
+  {
+    "name": "Stone-carving Mallet of Aulë",
+    "creatorId": 4,
+    "origin": "Valinor",
+    "tags": "tool,mallet,craft,stone",
+    "yearCreated": 1,
+    "powerLevel": 780
+  },
+  {
+    "name": "Dwarven Prototype Anvil",
+    "creatorId": 4,
+    "origin": "Valinor",
+    "tags": "anvil,dwarves,prototype,forge",
+    "yearCreated": 1,
+    "powerLevel": 820
+  },
+  {
+    "name": "Chain of the Earth-delver",
+    "creatorId": 4,
+    "origin": "Valinor",
+    "tags": "chain,metalwork,vala",
+    "yearCreated": 1,
+    "powerLevel": 610
+  },
+  {
+    "name": "Crystal Measure of the Deep",
+    "creatorId": 4,
+    "origin": "Valinor",
+    "tags": "instrument,crystal,craft",
+    "yearCreated": 1,
+    "powerLevel": 560
+  },
+  {
+    "name": "Forge-fire Emberstone",
+    "creatorId": 4,
+    "origin": "Valinor",
+    "tags": "stone,ember,forge,fire",
+    "yearCreated": 1,
+    "powerLevel": 740
+  },
+  {
+    "name": "Mantle Pin of the Master of Substances",
+    "creatorId": 4,
+    "origin": "Valinor",
+    "tags": "jewelry,pin,vala",
+    "yearCreated": 1,
+    "powerLevel": 430
+  }
+]

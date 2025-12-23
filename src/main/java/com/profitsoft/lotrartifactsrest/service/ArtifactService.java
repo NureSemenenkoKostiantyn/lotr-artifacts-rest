@@ -1,6 +1,7 @@
 package com.profitsoft.lotrartifactsrest.service;
 
 import com.profitsoft.lotrartifactsrest.dto.*;
+import com.profitsoft.lotrartifactsrest.exception.NotFoundException;
 import com.profitsoft.lotrartifactsrest.model.Artifact;
 import com.profitsoft.lotrartifactsrest.model.Creator;
 import com.profitsoft.lotrartifactsrest.repository.ArtifactRepository;
@@ -31,7 +32,7 @@ public class ArtifactService {
 
     public ArtifactDetailsDto saveArtifact(ArtifactSaveDto dto) {
         Creator creator = creatorRepository.findById(dto.getCreatorId())
-                .orElseThrow(() -> new IllegalArgumentException("Creator with id '%s' not found".formatted(dto.getCreatorId())));
+                .orElseThrow(() -> new NotFoundException("Creator with id '%s' not found".formatted(dto.getCreatorId())));
         Artifact artifact = convertToEntity(dto, creator);
         Artifact savedArtifact = artifactRepository.save(artifact);
         return convertToDetailsDto(savedArtifact);
@@ -39,7 +40,7 @@ public class ArtifactService {
 
     public ArtifactDetailsDto getArtifactById(Long artifactId) {
         Artifact artifact = artifactRepository.findById(artifactId)
-                .orElseThrow(() -> new IllegalArgumentException("Artifact with id '%s' not found".formatted(artifactId)));
+                .orElseThrow(() -> new NotFoundException("Artifact with id '%s' not found".formatted(artifactId)));
         return convertToDetailsDto(artifact);
     }
 
@@ -64,9 +65,9 @@ public class ArtifactService {
 
     public ArtifactDetailsDto updateArtifact(Long artifactId, ArtifactSaveDto dto) {
         Artifact artifact = artifactRepository.findById(artifactId)
-                .orElseThrow(() -> new IllegalArgumentException("Artifact with id '%s' not found".formatted(artifactId)));
+                .orElseThrow(() -> new NotFoundException("Artifact with id '%s' not found".formatted(artifactId)));
         Creator creator = creatorRepository.findById(dto.getCreatorId())
-                .orElseThrow(() -> new IllegalArgumentException("Creator with id '%s' not found".formatted(dto.getCreatorId())));
+                .orElseThrow(() -> new NotFoundException("Creator with id '%s' not found".formatted(dto.getCreatorId())));
 
         artifact.setName(dto.getName());
         artifact.setCreator(creator);
@@ -81,7 +82,7 @@ public class ArtifactService {
 
     public void deleteArtifact(Long artifactId) {
         artifactRepository.findById(artifactId)
-                .orElseThrow(() -> new IllegalArgumentException("Artifact with id '%s' not found".formatted(artifactId)));
+                .orElseThrow(() -> new NotFoundException("Artifact with id '%s' not found".formatted(artifactId)));
         artifactRepository.deleteById(artifactId);
     }
 
@@ -90,7 +91,7 @@ public class ArtifactService {
             try {
                 saveArtifact(dto);
             } catch (Exception ex) {
-                throw new IllegalArgumentException(ex);
+                throw new IllegalArgumentException(ex.getMessage(), ex);
             }
         });
 
